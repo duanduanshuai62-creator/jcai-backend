@@ -3,8 +3,6 @@ const cors = require('cors')
 const OpenAI = require('openai')
 require('dotenv').config()
 
-console.log('当前KEY:', process.env.DEEPSEEK_API_KEY)
-
 const app = express()
 
 app.use(cors())
@@ -47,14 +45,8 @@ app.post('/api/ai/generate', async (req, res) => {
     res.json({
       content: completion.choices[0].message.content
     })
-
   } catch (error) {
-
-    console.log('====================')
-    console.log('DeepSeek错误')
-    console.log('====================')
-
-    console.log(error)
+    console.log('DeepSeek错误:', error.message)
 
     res.status(500).json({
       message: 'AI生成失败',
@@ -63,6 +55,8 @@ app.post('/api/ai/generate', async (req, res) => {
   }
 })
 
-app.listen(3000, () => {
-  console.log('jcAI DeepSeek 后端启动成功：http://localhost:3000')
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+  console.log(`jcAI DeepSeek 后端启动成功: ${PORT}`)
 })
